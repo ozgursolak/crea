@@ -5,7 +5,7 @@ import { UserEntity } from './user.entity';
 import { CreateUserDto, LoginUserDto } from './dto';
 import { sign }  from 'jsonwebtoken';
 import { SECRET } from '../config';
-import { UserRO } from './user.interface';
+import { UserRO } from './user.payload';
 import { validate } from 'class-validator';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { HttpStatus } from '@nestjs/common';
@@ -17,7 +17,19 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
+  
+  async login(loginUserDto: LoginUserDto): Promise<UserRO>
+  {
+    const _user = await this.findOne(loginUserDto);
 
+    const errors = {User: ' not found'};
+    if (!_user) throw new HttpException({errors}, 401);
+
+    const token = this.generateJWT(_user);
+    const {email, username, age} = _user;
+    const user = {email, token, username, age};
+    return {user}
+  }
   async findOne({email, password}: LoginUserDto): Promise<UserEntity> {
     const user = await this.userRepository.findOne({email});
     if (!user) {

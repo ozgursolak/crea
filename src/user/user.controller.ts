@@ -1,11 +1,9 @@
 import {  Post, Body, Controller, UsePipes } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserRO } from './user.interface';
+import { UserRO } from './user.payload';
 import { CreateUserDto, LoginUserDto } from './dto';
-import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { ValidationPipe } from '../shared/pipes/validation.pipe';
-
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiOkResponse, ApiBody } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('user')
@@ -15,22 +13,20 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @UsePipes(new ValidationPipe())
+  @ApiOperation({description: "Signup Operation"})
+  @ApiBody({type: CreateUserDto })
+  @ApiOkResponse({ status: 200, description: 'Returns the new user info with token', type: UserRO})
   @Post('users')
-  async create(@Body('user') userData: CreateUserDto) {
-    return this.userService.create(userData);
+  async create(@Body('user') userData: CreateUserDto): Promise<UserRO> {
+    return await this.userService.create(userData);
   }
 
   @UsePipes(new ValidationPipe())
+  @ApiOperation({description: "Login Operation"})
+  @ApiBody({ description: "The Description for Login", type: LoginUserDto })
+  @ApiOkResponse({ status: 200, description: 'Returns logged in user info with token', type: UserRO})
   @Post('users/login')
   async login(@Body('user') loginUserDto: LoginUserDto): Promise<UserRO> {
-    const _user = await this.userService.findOne(loginUserDto);
-
-    const errors = {User: ' not found'};
-    if (!_user) throw new HttpException({errors}, 401);
-
-    const token = this.userService.generateJWT(_user);
-    const {email, username, age} = _user;
-    const user = {email, token, username, age};
-    return {user}
+    return await this.userService.login(loginUserDto);
   }
 }
