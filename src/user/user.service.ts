@@ -26,8 +26,8 @@ export class UserService {
     if (!_user) throw new HttpException({errors}, 401);
 
     const token = this.generateJWT(_user);
-    const {email, username, age} = _user;
-    const user = {email, token, username, age};
+    const {email, username, age, role} = _user;
+    const user = {email, token, username, age, role};
     return {user}
   }
   async findOne({email, password}: LoginUserDto): Promise<UserEntity> {
@@ -109,6 +109,7 @@ export class UserService {
       email: user.email,
       age: user.age,
       token: this.generateJWT(user),
+      role: user.role,
     };
 
     return { user: userRO };

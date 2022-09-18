@@ -1,4 +1,4 @@
-import {  Post, Body, Controller, UsePipes } from '@nestjs/common';
+import {  Post, Body, Controller, UsePipes, HttpCode } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserRO } from './user.payload';
 import { CreateUserDto, LoginUserDto } from './dto';
@@ -15,7 +15,7 @@ export class UserController {
   @UsePipes(new ValidationPipe())
   @ApiOperation({description: "Signup Operation"})
   @ApiBody({type: CreateUserDto })
-  @ApiOkResponse({ status: 200, description: 'Returns the new user info with token', type: UserRO})
+  @ApiOkResponse({ status: 201, description: 'Returns the new user info with token', type: UserRO})
   @Post('users')
   async create(@Body('user') userData: CreateUserDto): Promise<UserRO> {
     return await this.userService.create(userData);
@@ -26,6 +26,7 @@ export class UserController {
   @ApiBody({ description: "The Description for Login", type: LoginUserDto })
   @ApiOkResponse({ status: 200, description: 'Returns logged in user info with token', type: UserRO})
   @Post('users/login')
+  @HttpCode(200)
   async login(@Body('user') loginUserDto: LoginUserDto): Promise<UserRO> {
     return await this.userService.login(loginUserDto);
   }
