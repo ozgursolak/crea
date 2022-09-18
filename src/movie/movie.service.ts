@@ -83,6 +83,14 @@ export class MovieService {
     return movies_data_list;
   }
 
+  async deleteMovie(movieId: string): Promise<MovieEntity> {
+    const movie = await this.movieRepository.findOne(movieId);
+    
+    await this.movieRepository.delete(movie);
+
+    return movie;
+  }
+
   /* check availability of sessions of movie */
   private async checkSessionAvailability(sessions: SessionData[]) {
     const session_start_dates = sessions.map(session => session.start_date);

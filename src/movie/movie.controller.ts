@@ -1,4 +1,4 @@
-import {  Post, Body, Controller, UsePipes, UseGuards, HttpCode, Get } from '@nestjs/common';
+import {  Post, Body, Controller, UsePipes, UseGuards, HttpCode, Get, Param, Delete } from '@nestjs/common';
 import { ValidationPipe } from '../shared/pipes/validation.pipe';
 import { ApiBearerAuth, ApiTags, ApiOperation, ApiOkResponse, ApiResponse,  ApiBody } from '@nestjs/swagger';
 import { MovieService } from './movie.service';
@@ -7,6 +7,7 @@ import { RolesGuard } from '../user/role.guard';
 import { Roles } from '../user/role.decorator';
 import { Role } from '../user/role.enum';
 import { AuthGuard } from '../user/auth.guard';
+import { MovieEntity } from './movie.entity';
 
 @ApiBearerAuth()
 @ApiTags('movies')
@@ -37,5 +38,16 @@ export class MovieController {
   @Roles(Role.Manager, Role.Customer)
   async list(): Promise<MovieData[]> {
     return await this.movieService.listMovies();
+  }
+
+  @ApiOperation({description: "Delete Movie Operation"})
+  @ApiOkResponse({ status: 200, description: 'The movie has been deleted', type: MovieEntity })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @Delete('/:movieId')
+  @HttpCode(200)
+  @Roles(Role.Manager)
+  async delete(@Param() params): Promise<MovieEntity> {
+    return await this.movieService.deleteMovie(params.movieId);
   }
 }
