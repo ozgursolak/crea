@@ -55,6 +55,34 @@ export class MovieService {
     return Promise.resolve({movie: movie_data});
   }
 
+  async listMovies(): Promise<MovieData[]> {
+    const movies  = await getRepository(MovieEntity)
+      .createQueryBuilder('m')
+      .leftJoinAndSelect('m.sessions', 's')
+      .getMany();
+
+    if(movies == null) {
+      return null;
+    }
+    console.log("movies", movies);
+    const movies_data_list = movies.map(movie => {
+      const movie_data = new MovieData();
+      movie_data.age_limit = movie.age_limit;
+      movie_data.name = movie.name;
+      movie_data.sessions = movie.sessions.map(session => (
+        {
+          "room_no": session.room_no,
+          "start_date": session.start_date,
+          "end_date": session.end_date,
+        }
+      ));  
+
+      return movie_data;
+    });
+
+    return movies_data_list;
+  }
+
   /* check availability of sessions of movie */
   private async checkSessionAvailability(sessions: SessionData[]) {
     const session_start_dates = sessions.map(session => session.start_date);

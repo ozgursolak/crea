@@ -1,4 +1,4 @@
-import {  Post, Body, Controller, UsePipes, UseGuards } from '@nestjs/common';
+import {  Post, Body, Controller, UsePipes, UseGuards, HttpCode, Get } from '@nestjs/common';
 import { ValidationPipe } from '../shared/pipes/validation.pipe';
 import { ApiBearerAuth, ApiTags, ApiOperation, ApiOkResponse, ApiResponse,  ApiBody } from '@nestjs/swagger';
 import { MovieService } from './movie.service';
@@ -24,7 +24,18 @@ export class MovieController {
   @ApiBody({type: MovieData })
   @Post()
   @Roles(Role.Manager)
-  async create(@Body() movieData: MovieData): Promise<MovieRO> {
+  async addMovie(@Body() movieData: MovieData): Promise<MovieRO> {
     return await this.movieService.addMovie(movieData);
+  }
+
+  @ApiOperation({description: "List Movie Operation"})
+  @ApiOkResponse({ status: 200, description: 'The movies has been listed', type: [MovieData] })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @Get()
+  @HttpCode(200)
+  @Roles(Role.Manager, Role.Customer)
+  async list(): Promise<MovieData[]> {
+    return await this.movieService.listMovies();
   }
 }
