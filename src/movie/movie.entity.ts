@@ -1,11 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 import { SessionEntity } from './session.entity';
 
 @Entity('movie')
 export class MovieEntity {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @OneToMany(type => SessionEntity, session => session.movie)
   sessions: SessionEntity[];

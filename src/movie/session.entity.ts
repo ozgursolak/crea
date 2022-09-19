@@ -5,7 +5,7 @@ import { MovieEntity } from './movie.entity';
 @Entity('session')
 export class SessionEntity {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @ManyToOne(type => MovieEntity, movie => movie.sessions)
   movie: MovieEntity;

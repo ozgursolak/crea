@@ -1,7 +1,6 @@
-import { Injectable, Session } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getRepository } from 'typeorm';
-import { validate } from 'class-validator';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { HttpStatus } from '@nestjs/common';
 import { MovieEntity } from './movie.entity';
@@ -157,6 +156,8 @@ export class MovieService {
 
       await this.sessionRepository.save(movie.sessions);
     }
+
+    movie.updated = new Date();
 
     return await this.movieRepository.save(movie);
   }
