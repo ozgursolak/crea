@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "ed855523-2cce-44af-9c2c-b47500d85386",
+		"name": "crea",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5257497"
+	},
+	"item": [
+		{
+			"name": "SignUpUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJPemd1ciIsImVtYWlsIjoib3pndXJzb2xhazI0QGdtYWlsLmNvbSIsImV4cCI6MTY2ODY4MDQ2My4yNywiaWF0IjoxNjYzNDk2NDYzfQ.Zo5jOYm7VpNwBtBwViJehVpKSi6eGOQwucr4z0sw8dQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": {\n        \"username\": \"Enes\",\n        \"email\": \"enes@gmail.com\",\n        \"password\": \"12345\",\n        \"age\": 10,\n        \"role\": \"Customer\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoginUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": {\n        \"email\": \"ozgursolak24@gmail.com\",\n        \"password\": \"12345\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddMovie",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA3MGM4ODRkLWVhNTEtNGYwMi1iNTgzLWY4NDJlODI2NWUxZiIsInVzZXJuYW1lIjoiRW5lcyIsImVtYWlsIjoiZW5lc0BnbWFpbC5jb20iLCJleHAiOjE2Njg3MDQ4NDYuMTE4LCJpYXQiOjE2NjM1MjA4NDZ9.U5xFC_k1GK3y4isjEDGNpQ1vQsTt61AfPHlc8S5TBs4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Terminator2004\",\n    \"age_limit\": 13,\n    \"sessions\": [\n        {\n            \"room_no\": \"102\",\n            \"start_date\": \"12:00\",\n            \"end_date\": \"14:00\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Movies",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA3MGM4ODRkLWVhNTEtNGYwMi1iNTgzLWY4NDJlODI2NWUxZiIsInVzZXJuYW1lIjoiRW5lcyIsImVtYWlsIjoiZW5lc0BnbWFpbC5jb20iLCJleHAiOjE2Njg3MDUxNTQuNjUyLCJpYXQiOjE2NjM1MjExNTR9.DvKVEh3NqllULWPib3Jzn7jHSPnZ-VGph8wNIQCKv9M",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteMovie",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU1MjkzZGMxLTA4YTYtNGNkOC1iOTM0LWZhNDhkYWU1YzI4ZCIsInVzZXJuYW1lIjoiT3pndXIiLCJlbWFpbCI6Im96Z3Vyc29sYWsyNEBnbWFpbC5jb20iLCJleHAiOjE2Njg3MDkzOTIuMTk4LCJpYXQiOjE2NjM1MjUzOTJ9.v24GAMCysbQzG4rjLMsqb5T73DQ_Q2xWJ3HTdtc6I30",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/movies/5422a6bc-e233-45fd-af3c-99bdf06ef995",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"movies",
+						"5422a6bc-e233-45fd-af3c-99bdf06ef995"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateMovieData",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU1MjkzZGMxLTA4YTYtNGNkOC1iOTM0LWZhNDhkYWU1YzI4ZCIsInVzZXJuYW1lIjoiT3pndXIiLCJlbWFpbCI6Im96Z3Vyc29sYWsyNEBnbWFpbC5jb20iLCJleHAiOjE2Njg3OTM1NzIuMjk4LCJpYXQiOjE2NjM2MDk1NzJ9.buhD-fcJnxkhX_o4CZ7gSsrnqUYXgkNt7wKDnj3ycUc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"5422a6bc-e233-45fd-af3c-99bdf06ef995\",\n    \"name\": \"updated-terminator-new-22\",\n    \"age_limit\": 20,\n    \"sessions\":[\n        {\n            \"id\": \"685b5e63-fb2f-4023-b8bd-2cf950e76752\",\n            \"start_date\": \"11.00\",\n            \"end_date\": \"12.00\",\n            \"room_no\": \"1\"\n        }\n    ]\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BuyTicket",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU1MjkzZGMxLTA4YTYtNGNkOC1iOTM0LWZhNDhkYWU1YzI4ZCIsInVzZXJuYW1lIjoiT3pndXIiLCJlbWFpbCI6Im96Z3Vyc29sYWsyNEBnbWFpbC5jb20iLCJleHAiOjE2Njg3OTc0NjkuNDgsImlhdCI6MTY2MzYxMzQ2OX0.k5PL_A91B7ePNATR-fWyW6opKqDJDga-miN1e-ac6Rw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"e5293dc1-08a6-4cd8-b934-fa48dae5c28d\",\n    \"movie_id\": \"5422a6bc-e233-45fd-af3c-99bdf06ef995\",\n    \"session_id\": \"685b5e63-fb2f-4023-b8bd-2cf950e76751\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/ticket",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"ticket"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "WatchMovie",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU1MjkzZGMxLTA4YTYtNGNkOC1iOTM0LWZhNDhkYWU1YzI4ZCIsInVzZXJuYW1lIjoiT3pndXIiLCJlbWFpbCI6Im96Z3Vyc29sYWsyNEBnbWFpbC5jb20iLCJleHAiOjE2Njg3OTc0NjkuNDgsImlhdCI6MTY2MzYxMzQ2OX0.k5PL_A91B7ePNATR-fWyW6opKqDJDga-miN1e-ac6Rw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"e5293dc1-08a6-4cd8-b934-fa48dae5c28d\",\n    \"movie_id\": \"5422a6bc-e233-45fd-af3c-99bdf06ef995\",\n    \"session_id\": \"685b5e63-fb2f-4023-b8bd-2cf950e76751\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/ticket/use",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"ticket",
+						"use"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListWatchedMovies",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU1MjkzZGMxLTA4YTYtNGNkOC1iOTM0LWZhNDhkYWU1YzI4ZCIsInVzZXJuYW1lIjoiT3pndXIiLCJlbWFpbCI6Im96Z3Vyc29sYWsyNEBnbWFpbC5jb20iLCJleHAiOjE2Njg3OTc0NjkuNDgsImlhdCI6MTY2MzYxMzQ2OX0.k5PL_A91B7ePNATR-fWyW6opKqDJDga-miN1e-ac6Rw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/ticket/list/e5293dc1-08a6-4cd8-b934-fa48dae5c28d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"ticket",
+						"list",
+						"e5293dc1-08a6-4cd8-b934-fa48dae5c28d"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
