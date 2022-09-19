@@ -7,6 +7,7 @@ import { HttpStatus } from '@nestjs/common';
 import { MovieEntity } from './movie.entity';
 import { MovieData, MovieRO, SessionData } from './movie.payload';
 import { SessionEntity } from './session.entity';
+import { UpdateMovieDto } from './dto';
 
 @Injectable()
 export class MovieService {
@@ -91,6 +92,75 @@ export class MovieService {
     return movie;
   }
 
+  async updateMovie(update_movie_dto: UpdateMovieDto): Promise<MovieEntity> {
+    const movie  = await getRepository(MovieEntity)
+      .createQueryBuilder('m')
+      .leftJoinAndSelect('m.sessions', 's')
+      .where('m.id = :movieId', { movieId: update_movie_dto.id})
+      .getOne();
+    
+    if(movie == null)
+    {
+      const _errors = { movie: 'Given movie does not exist' };
+      throw new HttpException({ message: 'Input data validation failed', _errors }, HttpStatus.BAD_REQUEST);
+    }
+
+    const updated_movie = await this.updateMovieData(update_movie_dto, movie);
+
+    return updated_movie;
+  }
+
+  private async updateMovieData(update_movie_dto: UpdateMovieDto, movie: MovieEntity) {
+    if (update_movie_dto.age_limit != null) {
+      movie.age_limit = update_movie_dto.age_limit;
+    }
+
+    if (update_movie_dto.name != null) {
+      movie.name = update_movie_dto.name;
+    }
+
+    if (update_movie_dto.sessions != null) {
+      for (let new_session of update_movie_dto.sessions) {
+        let existing_session = movie.sessions.find(session => session.id == new_session.id);
+        
+        if(existing_session != null)
+        {
+          let date_changed = false;
+          if (new_session.movie != null) {
+            existing_session.movie = new_session.movie;
+          }
+        
+          if (new_session.start_date != null) {
+            existing_session.start_date = new_session.start_date;
+            date_changed = true;
+          }
+        
+          if (new_session.end_date != null) {
+            existing_session.end_date = new_session.end_date;
+            date_changed = true;
+          }
+        
+          if (new_session.room_no != null) {
+            existing_session.room_no = new_session.room_no;
+          }
+        
+          if(date_changed == true)
+          {
+            await this.checkSessionAvailability([{ 
+              "room_no": existing_session.room_no,
+              "start_date": existing_session.start_date,
+              "end_date": existing_session.end_date
+            }]);
+          }
+        }
+      }
+
+      await this.sessionRepository.save(movie.sessions);
+    }
+
+    return await this.movieRepository.save(movie);
+  }
+
   /* check availability of sessions of movie */
   private async checkSessionAvailability(sessions: SessionData[]) {
     const session_start_dates = sessions.map(session => session.start_date);
@@ -104,7 +174,9 @@ export class MovieService {
       .getRawMany();
   
     if(unavailable_sessions.length > 0) {
+      
       for(let new_session of sessions) {
+        
         if(unavailable_sessions.some(us => (us.room_no == new_session.room_no && us.start_date == new_session.start_date))) {
           const _errors = { sessions: 'Given sessions are not available' };
           throw new HttpException({ message: 'Input data validation failed', _errors }, HttpStatus.BAD_REQUEST);
