@@ -7,7 +7,7 @@ import { Role } from '../user/role.enum';
 import { AuthGuard } from '../user/auth.guard';
 import { TicketService } from './ticket.service';
 import { BuyTickeDto, WatchMovieDto } from './dto';
-import { TicketRO } from './ticket.payload';
+import { TicketRO, WatchedMovieData } from './ticket.payload';
 
 
 @ApiBearerAuth()
@@ -42,5 +42,18 @@ export class TicketController {
   @Roles(Role.Manager, Role.Customer)
   async watchMovie(@Body() watch_movie: WatchMovieDto): Promise<boolean> {
     return await this.ticketService.watchMovie(watch_movie);
+  }
+
+  @UsePipes(new ValidationPipe())
+  @ApiOperation({description: "Watch Movie Operation"})
+  @ApiOkResponse({ status: 200, description: 'The user has watched the given movie in the given session.', type: Boolean})
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @ApiBody({type: WatchMovieDto })
+  @Get('/list/:user_id')
+  @HttpCode(200)
+  @Roles(Role.Manager, Role.Customer)
+  async listWatchedMovies(@Param() params): Promise<WatchedMovieData[]> {
+    return await this.ticketService.listWatchedMovies(params.user_id);
   }
 }

@@ -18,3 +18,12 @@ export class TicketRO {
   @ApiProperty()
   ticket: TicketData;
 }
+
+export class WatchedMovieData {
+  @ApiProperty()
+  movie_name: string;
+
+  @ApiProperty()
+  watched_date: Date;
+}
+

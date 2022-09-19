@@ -5,7 +5,7 @@ import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { HttpStatus } from '@nestjs/common';
 import { TicketEntity } from './ticket.entity';
 import { BuyTickeDto, WatchMovieDto } from './dto';
-import { TicketRO } from './ticket.payload';
+import { TicketRO, WatchedMovieData } from './ticket.payload';
 import { MovieEntity } from '../movie/movie.entity';
 import { UserEntity } from '../user/user.entity';
 
@@ -77,9 +77,36 @@ export class TicketService {
     }
 
     ticket.used_date = new Date();
-
     await this.ticketRepository.save(ticket);
 
     return Promise.resolve(true);
+  }
+
+  async listWatchedMovies(user_id: string): Promise<WatchedMovieData[]>
+  {
+    console.log("user_id", user_id);
+    const used_tickets = await getRepository(TicketEntity)
+    .createQueryBuilder('t')
+    .innerJoinAndSelect('t.user', 'u')
+    .innerJoinAndSelect('t.movie', 'm')
+    .select(['m.name', 't.used_date'])
+    .where('t.userId = :user_id', { user_id: user_id})
+    .andWhere('t.used_date is not null')
+    .getMany();
+
+    console.log(used_tickets);
+
+    const response = [];
+
+    used_tickets.forEach(ticket => {
+      const watched_movie = new WatchedMovieData();
+
+      watched_movie.movie_name = ticket.movie.name;
+      watched_movie.watched_date = ticket.used_date;
+
+      response.push(watched_movie);
+    });
+
+    return response;
   }
 }
