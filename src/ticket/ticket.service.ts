@@ -4,7 +4,7 @@ import { Repository, getRepository } from 'typeorm';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { HttpStatus } from '@nestjs/common';
 import { TicketEntity } from './ticket.entity';
-import { BuyTickeDto } from './dto';
+import { BuyTickeDto, WatchMovieDto } from './dto';
 import { TicketRO } from './ticket.payload';
 import { MovieEntity } from '../movie/movie.entity';
 import { UserEntity } from '../user/user.entity';
@@ -57,5 +57,29 @@ export class TicketService {
       "session_id": movie.sessions[0].id
       }
     };
+  }
+
+  async watchMovie(watch_movie_dto: WatchMovieDto): Promise<boolean>
+  {
+    const { user_id, movie_id, session_id } = watch_movie_dto;
+    const ticket = await getRepository(TicketEntity)
+    .createQueryBuilder('t')
+    .where('t.userId = :user_id', { user_id: user_id }) 
+    .andWhere('t.movieId = :movie_id', { movie_id: movie_id })
+    .andWhere('t.sessionId = :session_id', { session_id: session_id })
+    .andWhere('t.used_date is null')
+    .getOne();
+
+    if(ticket == null)
+    {
+      const _errors = { ticket: 'User has not a valid ticket for this movie.' };
+      throw new HttpException({ message: 'Input data validation failed', _errors }, HttpStatus.BAD_REQUEST);
+    }
+
+    ticket.used_date = new Date();
+
+    await this.ticketRepository.save(ticket);
+
+    return Promise.resolve(true);
   }
 }

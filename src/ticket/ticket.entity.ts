@@ -19,7 +19,7 @@ export class TicketEntity {
   session: SessionEntity;
 
   @Column({nullable: true, default: null })
-  used_date!: string | null;
+  used_date!: Date | null;
 
   @CreateDateColumn()
   @IsDate()
