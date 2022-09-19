@@ -64,7 +64,6 @@ export class MovieService {
     if(movies == null) {
       return null;
     }
-    console.log("movies", movies);
     const movies_data_list = movies.map(movie => {
       const movie_data = new MovieData();
       movie_data.age_limit = movie.age_limit;

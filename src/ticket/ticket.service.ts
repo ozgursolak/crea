@@ -84,7 +84,6 @@ export class TicketService {
 
   async listWatchedMovies(user_id: string): Promise<WatchedMovieData[]>
   {
-    console.log("user_id", user_id);
     const used_tickets = await getRepository(TicketEntity)
     .createQueryBuilder('t')
     .innerJoinAndSelect('t.user', 'u')
@@ -93,8 +92,6 @@ export class TicketService {
     .where('t.userId = :user_id', { user_id: user_id})
     .andWhere('t.used_date is not null')
     .getMany();
-
-    console.log(used_tickets);
 
     const response = [];
 
