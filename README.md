@@ -79,7 +79,7 @@ This application adheres to the api specifications set by the OpenAPI.
 
 # Authentication
  
-This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The authorization and role guards handle the validation and authentication of the token.
+This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The <strong>authorization</strong> and <strong>role guards</strong> handle the validation and authentication of the token.
 
 ----------
  
