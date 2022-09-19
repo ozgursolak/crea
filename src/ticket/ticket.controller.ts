@@ -45,11 +45,10 @@ export class TicketController {
   }
 
   @UsePipes(new ValidationPipe())
-  @ApiOperation({description: "Watch Movie Operation"})
-  @ApiOkResponse({ status: 200, description: 'The user has watched the given movie in the given session.', type: Boolean})
+  @ApiOperation({description: "List Watched Movie Operation"})
+  @ApiOkResponse({ status: 200, description: 'The watched movies are listed.', type: [WatchedMovieData]})
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
-  @ApiBody({type: WatchMovieDto })
   @Get('/list/:user_id')
   @HttpCode(200)
   @Roles(Role.Manager, Role.Customer)
